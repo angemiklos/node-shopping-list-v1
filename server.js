@@ -10,6 +10,10 @@ const bodyParser = require('body-parser');
 // interact with in our GET endpoint
 const {ShoppingList} = require('./models');
 
+// we import the Recipes model, which we'll
+// interact with in our GET endpoint
+const {Recipes} = require('./models');
+
 const jsonParser = bodyParser.json();
 const app = express();
 
@@ -29,6 +33,21 @@ ShoppingList.create('peppers', 4);
 // all current ShoppingList items by calling `ShoppingList.get()`
 app.get('/shopping-list', (req, res) => {
   res.json(ShoppingList.get());
+});
+
+// we're going to add some items to Recipes
+// so there's some data to look at. Note that 
+// normally you wouldn't do this. Usually your
+// server will simply expose the state of the
+// underlying database.
+Recipes.create('chocolate milk', ['cocoa', 'milk', 'sugar']);
+Recipes.create('greek salad', ['romaine', 'tomatoes', 'cucumber', 'feta']);
+Recipes.create('mushroom soup', ['mushrooms', 'cream', 'butter', 'stock']);
+
+// when the root of this route is called with GET, return
+// all current Recipe items by calling `Recipes.get()`
+app.get('/recipes', (req, res) => {
+  res.json(Recipes.get());
 });
 
 app.listen(process.env.PORT || 8080, () => {
